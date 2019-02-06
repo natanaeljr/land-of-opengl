@@ -1,11 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
 
-find_package(glfw3 REQUIRED PATHS ${CMAKE_BINARY_DIR}/lib NO_DEFAULT_PATH)
-
-if(glfw3_FOUND)
-    message("HDFKLDSHFALKFJALDSFJS")
-endif()
-
 #########################################################################################
 # Includes
 #########################################################################################
@@ -33,6 +27,14 @@ add_dependencies(${LAND_OF_OPENGL_BIN}
 target_link_libraries(${LAND_OF_OPENGL_BIN}
     ${LAND_OF_OPENGL_LIB}
     ${GLFW_LIBRARY}
+    pthread
+    GL
+    dl
+    X11
+    Xrandr
+    Xcursor
+    Xinerama
+    Xxf86vm
 )
 
 #########################################################################################
