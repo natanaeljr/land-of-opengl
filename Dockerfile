@@ -10,5 +10,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
     libxrandr-dev \
     libxcursor-dev \
     libxinerama-dev \
+    libgl1-mesa-dev \
     mesa-common-dev
 
