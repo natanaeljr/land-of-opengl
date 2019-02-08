@@ -1,0 +1,27 @@
+image:
+
+stages:
+  - docker:build
+  - docker:deploy
+
+variables:
+  DOCKER_HOST: tcp://docker:2375/
+  DOCKER_DRIVER: overlay2
+  CONTAINER_TAG: ci$CI_PIPELINE_ID
+  CONTAINER_IMAGE: $CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/ubuntu-gtest
+  CONTAINER_TAR_FILE: $CI_PROJECT_NAMESPACE.$CI_PROJECT_NAME.ubuntu-gtest.$TARGET_ARCH-ci$CI_PIPELINE_ID.tar
+  CONTAINER_CACHE_FROM: $CI_REGISTRY_IMAGE/ubuntu-gtest:$TARGET_ARCH-latest
+
+.docker:
+  before_script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker info
+  script:
+    - docker pull $CONTAINER_CACHE_FROM || echo "docker pull failed, ignoring."
+    - make build
+    - docker save --output $CONTAINER_TAR_FILE $CONTAINER_IMAGE:$TARGET_ARCH-$CONTAINER_TAG
+  artifacts:
+    paths:
+      - $CONTAINER_TAR_FILE
+    expire_in: 1 day
+ 
