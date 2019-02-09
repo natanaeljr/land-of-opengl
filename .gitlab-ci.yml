@@ -28,6 +28,7 @@ variables:
     - docker info
   only:
     changes:
+      - .gitlab-ci.yml
       - $DOCKERFILE_DIR/Dockerfile
     refs:
       - scheduled
