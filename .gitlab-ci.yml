@@ -31,7 +31,16 @@ variables:
       - .gitlab-ci.yml
       - $DOCKERFILE_DIR/Dockerfile
     refs:
+      - branches
+      - tags
+      - api
+      - external
+      - pipelines
+      - pushes
       - scheduled
+      - triggers
+      - web
+      - merge_requests
  
 docker:build:
   extends: .docker
