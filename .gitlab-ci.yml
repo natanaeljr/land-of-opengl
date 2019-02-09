@@ -59,8 +59,8 @@ docker:deploy:
   stage: docker:deploy
   script:
     - docker load --input $CONTAINER_TAR_FILE
-    - docker tag $CONTAINER_IMAGE:$CONTAINER_TAG $CI_REGISTRY/$CONTAINER_NAME:$CI_COMMIT_REF_SLUG
-    - docker push $CI_REGISTRY/$CONTAINER_NAME:$CI_COMMIT_REF_SLUG
+    - docker tag $CONTAINER_IMAGE:$CONTAINER_TAG $CI_REGISTRY/$CONTAINER_IMAGE:$CI_COMMIT_REF_SLUG
+    - docker push $CI_REGISTRY/$CONTAINER_IMAGE:$CI_COMMIT_REF_SLUG
   dependencies:
     - docker:build
 
