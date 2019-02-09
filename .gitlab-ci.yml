@@ -1,4 +1,4 @@
-image: $CONTAINER_IMAGE:$CI_COMMIT_REF_SLUG
+image: $CI_REGISTRY/$CONTAINER_IMAGE:$CI_COMMIT_REF_SLUG
 
 stages:
   - docker:build
