@@ -69,10 +69,15 @@ docker:deploy:
 build:
   stage: build
   script:
-    - pwd && ls
+    - pwd; ls
     - mkdir build
     - cd build
     - cmake ..
     - make all
+  artifacts:
+    paths:
+      - build/src/land-of-opengl
+    expire_in: 2 days
+  dependencies: []
 
 ###################################################################################################
