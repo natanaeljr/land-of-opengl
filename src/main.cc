@@ -1,3 +1,4 @@
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <thread>
 
@@ -18,8 +19,14 @@ int main()
     // GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL", glfwGetPrimaryMonitor(), nullptr);
     glfwMakeContextCurrent(window);
 
-    while(!glfwWindowShouldClose(window))
-    {
+    /* GLEW */
+    glewExperimental = GL_TRUE;
+    glewInit();
+    GLuint vertexBuffer;
+    glGenBuffers(1, &vertexBuffer);
+    printf("%u\n", vertexBuffer);
+
+    while (!glfwWindowShouldClose(window)) {
         /* For fullscreen application */
         // if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         //     glfwSetWindowShouldClose(window, GL_TRUE);
