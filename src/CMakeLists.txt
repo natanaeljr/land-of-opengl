@@ -13,6 +13,19 @@ add_library(${LAND_OF_OPENGL_LIB} STATIC
     core.cc
 )
 
+target_link_libraries(${LAND_OF_OPENGL_LIB}
+    ${glfw3_LIBRARY}
+    ${glew_LIBRARY}
+    ${OPENGL_gl_LIBRARY}
+    pthread
+    dl
+    X11
+    Xrandr
+    Xcursor
+    Xinerama
+    Xxf86vm
+)
+
 #########################################################################################
 # Executable
 #########################################################################################
@@ -26,15 +39,6 @@ add_dependencies(${LAND_OF_OPENGL_BIN}
 
 target_link_libraries(${LAND_OF_OPENGL_BIN}
     ${LAND_OF_OPENGL_LIB}
-    ${GLFW_LIBRARY}
-    pthread
-    GL
-    dl
-    X11
-    Xrandr
-    Xcursor
-    Xinerama
-    Xxf86vm
 )
 
 #########################################################################################

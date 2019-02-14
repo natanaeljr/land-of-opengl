@@ -20,14 +20,19 @@ set(LAND_OF_OPENGL_LIB "landofopengl")
 #########################################################################################
 # Includes
 #########################################################################################
-include(lib/glfw.cmake)
-include(lib/glew.cmake)
+find_package(OpenGL)
+find_package(glfw3)
+set(glfw3_INCLUDE_DIR GLFW)
+set(glfw3_LIBRARY glfw)
+set(glew_INCLUDE_DIR GL)
+set(glew_LIBRARY GLEW)
 
 #########################################################################################
 # Headers
 #########################################################################################
-include_directories(${GLFW_INCLUDE_DIR})
-include_directories(${GLEW_INCLUDE_DIR})
+include_directories(${OPENGL_INCLUDE_DIR})
+include_directories(${glfw3_INCLUDE_DIR})
+include_directories(${glew_INCLUDE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(${CMAKE_BINARY_DIR}/include)
 

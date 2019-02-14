@@ -1,8 +1,6 @@
 FROM ubuntu:latest
-#FROM thewtex/opengl:latest
 
-RUN apt-get update
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
     git \
     g++ \
     cmake \
@@ -10,6 +8,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
     libxrandr-dev \
     libxcursor-dev \
     libxinerama-dev \
+    mesa-common-dev \
     libgl1-mesa-dev \
-    mesa-common-dev
-
+    libglu1-mesa-dev \
+    libglfw3-dev \
+    libglew-dev \
