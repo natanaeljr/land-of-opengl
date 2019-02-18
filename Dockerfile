@@ -12,4 +12,4 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
     libgl1-mesa-dev \
     libglu1-mesa-dev \
     libglfw3-dev \
-    libglew-dev \
+    libglew-dev

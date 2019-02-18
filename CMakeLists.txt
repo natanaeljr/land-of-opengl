@@ -6,7 +6,7 @@ project(land-of-opengl LANGUAGES CXX)
 #########################################################################################
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_definitions(-DGLEW_STATIC)
@@ -21,20 +21,19 @@ set(LAND_OF_OPENGL_LIB "landofopengl")
 # Includes
 #########################################################################################
 find_package(OpenGL)
-find_package(glfw3)
-set(glfw3_INCLUDE_DIR GLFW)
-set(glfw3_LIBRARY glfw)
-set(glew_INCLUDE_DIR GL)
-set(glew_LIBRARY GLEW)
+
+include(lib/glew.cmake)
+include(lib/glfw.cmake)
 
 #########################################################################################
 # Headers
 #########################################################################################
-include_directories(${OPENGL_INCLUDE_DIR})
-include_directories(${glfw3_INCLUDE_DIR})
-include_directories(${glew_INCLUDE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(${CMAKE_BINARY_DIR}/include)
+
+include_directories(${OPENGL_INCLUDE_DIR})
+include_directories(${GLFW_INCLUDE_DIR})
+include_directories(${GLEW_INCLUDE_DIR})
 
 #########################################################################################
 # Sub-directories

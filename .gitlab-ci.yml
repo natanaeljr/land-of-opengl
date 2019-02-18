@@ -29,7 +29,7 @@ variables:
   only:
     changes:
       - .gitlab-ci.yml
-      - $DOCKERFILE_DIR/Dockerfile
+      - Dockerfile
     refs:
       - branches
       - tags

@@ -1,12 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
 #########################################################################################
-# Includes
-#########################################################################################
-include_directories(include)
-include_directories(${GLFW_INCLUDE_DIR})
-
-#########################################################################################
 # Libraries
 #########################################################################################
 add_library(${LAND_OF_OPENGL_LIB} STATIC
@@ -14,8 +8,8 @@ add_library(${LAND_OF_OPENGL_LIB} STATIC
 )
 
 target_link_libraries(${LAND_OF_OPENGL_LIB}
-    ${glfw3_LIBRARY}
-    ${glew_LIBRARY}
+    ${GLEW_LIBRARY}
+    ${GLFW_LIBRARY}
     ${OPENGL_gl_LIBRARY}
     pthread
     dl
