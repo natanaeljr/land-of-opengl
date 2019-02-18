@@ -11,5 +11,4 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
     mesa-common-dev \
     libgl1-mesa-dev \
     libglu1-mesa-dev \
-    libglfw3-dev \
-    libglew-dev
+    libglfw3-dev
