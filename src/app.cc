@@ -10,6 +10,9 @@
 
 #include "land_of_opengl/app.h"
 
+#include <iostream>
+
+#include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
 /************************************************************************************************/
@@ -31,6 +34,11 @@ int App::Launch()
         800, 600, "OpenGL", nullptr /* or glfwGetPrimaryMonitor() for fullscreen */, nullptr);
 
     glfwMakeContextCurrent(window);
+
+    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
 
     while (!glfwWindowShouldClose(window)) {
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)

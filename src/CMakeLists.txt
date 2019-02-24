@@ -8,10 +8,11 @@ add_library(${LAND_OF_OPENGL_LIBRARY} STATIC
 )
 
 target_link_libraries(${LAND_OF_OPENGL_LIBRARY}
+    ${GLAD_LIBRARIES}
     ${GLFW3_LIBRARIES}
     ${OPENGL_gl_LIBRARY}
-    pthread
     dl
+    pthread
 )
 
 #########################################################################################
@@ -19,6 +20,6 @@ target_link_libraries(${LAND_OF_OPENGL_LIBRARY}
 #########################################################################################
 add_executable(${LAND_OF_OPENGL_BINARY} main.cc)
 
-target_link_libraries(${LAND_OF_OPENGL_BINARY} ${LAND_OF_OPENGL_LIBRARY})
+target_link_libraries(${LAND_OF_OPENGL_BINARY} ${LAND_OF_OPENGL_LIBRARY} dl)
 
 add_dependencies(${LAND_OF_OPENGL_BINARY} ${LAND_OF_OPENGL_LIBRARY})

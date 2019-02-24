@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(land-of-opengl LANGUAGES CXX VERSION 0.1)
+project(land-of-opengl VERSION 0.1 LANGUAGES CXX C)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
@@ -30,13 +30,19 @@ set(LAND_OF_OPENGL_BINARY "land-of-opengl")
 # Dependencies
 #########################################################################################
 find_package(OpenGL REQUIRED)
+add_definitions(${OPENGL_DEFINITIONS})
+
 if(BUILD_DEPS)
-    message("-- Building project dependencies enabled")
+    message(STATUS "Building project dependencies enabled")
     set(BUILD_GLFW3 ON CACHE BOOL "")
+    set(DOWNLOAD_GLAD ON CACHE BOOL "")
 else()
-    message("-- Using project dependencies from system")
+    message(STATUS "Using project dependencies from system")
 endif()
+
 include(cmake/glfw3.cmake)
+add_definitions(${GLFW3_DEFINITIONS})
+include(cmake/GLAD.cmake)
 
 #########################################################################################
 # Headers
@@ -44,6 +50,7 @@ include(cmake/glfw3.cmake)
 include_directories(${LAND_OF_OPENGL_INCLUDE_DIR})
 include_directories(${OPENGL_INCLUDE_DIRS})
 include_directories(${GLFW3_INCLUDE_DIRS})
+include_directories(${GLAD_INCLUDE_DIRS})
 
 #########################################################################################
 # Sub-directories
