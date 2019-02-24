@@ -1,43 +1,56 @@
 cmake_minimum_required(VERSION 3.5)
-project(land-of-opengl LANGUAGES CXX)
+project(land-of-opengl LANGUAGES CXX VERSION 0.1)
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
 #########################################################################################
 # General
 #########################################################################################
+set(CMAKE_VERBOSE_MAKEFILE OFF)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_FLAGS_DEBUG "-g -ggdb -pg -fsanitize=undefined")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 
-add_definitions(-DGLEW_STATIC)
+option(LANDOFOPENGL_DOWNLOAD_DEPS OFF)
+
+set(OpenGL_GL_PREFERENCE "GLVND")
 
 #########################################################################################
 # Project
 #########################################################################################
-set(LAND_OF_OPENGL_BIN "land-of-opengl")
-set(LAND_OF_OPENGL_LIB "landofopengl")
+set(LAND_OF_OPENGL_INCLUDE_DIR "include")
+set(LAND_OF_OPENGL_LIBRARY "LandOfOpenGL")
+set(LAND_OF_OPENGL_BINARY "land-of-opengl")
 
 #########################################################################################
-# Includes
+# Dependencies
 #########################################################################################
 find_package(OpenGL)
-
-include(lib/glew.cmake)
-include(lib/glfw.cmake)
+include(cmake/glfw3.cmake)
 
 #########################################################################################
 # Headers
 #########################################################################################
-include_directories(${CMAKE_SOURCE_DIR}/include)
-include_directories(${CMAKE_BINARY_DIR}/include)
-
-include_directories(${OPENGL_INCLUDE_DIR})
-include_directories(${GLFW_INCLUDE_DIR})
-include_directories(${GLEW_INCLUDE_DIR})
+include_directories(${LAND_OF_OPENGL_INCLUDE_DIR})
+include_directories(${OPENGL_INCLUDE_DIRS})
+include_directories(${GLFW3_INCLUDE_DIRS})
 
 #########################################################################################
 # Sub-directories
 #########################################################################################
-add_subdirectory(include)
-add_subdirectory(lib)
 add_subdirectory(src)
+
+#########################################################################################
+# Testing
+#########################################################################################
+if(BUILD_TESTING)
+    add_subdirectory(test)
+endif(BUILD_TESTING)
+
+#########################################################################################
+# Install
+#########################################################################################
+install(FILES "src/${LAND_OF_OPENGL_BINARY}" DESTINATION "bin")

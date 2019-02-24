@@ -1,39 +1,25 @@
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <thread>
+/************************************************************************************************/
+/**
+ * \file main.cc
+ * \brief  Main file.
+ * \author Natanael Josue Rabello
+ * \copyright Copyright (c) 2019
+ * \date 2019-02-23
+ */
+/************************************************************************************************/
+
+#include "iostream"
+
+#include "land_of_opengl/app.h"
+
+/************************************************************************************************/
 
 int main()
 {
-    glfwInit();
+    std::cout << "App main." << std::endl;
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    landofopengl::App app;
+    int ret = app.Launch();
 
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
-    /* For windowed application */
-    GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL", nullptr, nullptr);
-    /* For fullscreen application */
-    // GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL", glfwGetPrimaryMonitor(), nullptr);
-    glfwMakeContextCurrent(window);
-
-    /* GLEW */
-    glewExperimental = GL_TRUE;
-    glewInit();
-    GLuint vertexBuffer;
-    glGenBuffers(1, &vertexBuffer);
-    printf("%u\n", vertexBuffer);
-
-    while (!glfwWindowShouldClose(window)) {
-        /* For fullscreen application */
-        // if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        //     glfwSetWindowShouldClose(window, GL_TRUE);
-
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
-
-    glfwTerminate();
+    return ret;
 }
