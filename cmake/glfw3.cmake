@@ -2,14 +2,15 @@ cmake_minimum_required(VERSION 3.5)
 include(ExternalProject)
 
 #########################################################################################
-# GLFW
+# GLFW3
 #########################################################################################
-if(LANDOFOPENGL_DOWNLOAD_DEPS)
-    set(BUILD_GLFW3 ON)
-else()
+option(BUILD_GLFW3 "Download and build GLFW3" OFF)
+
+# Use GLFW from system
+if(NOT BUILD_GLFW3)
     find_package(glfw3)
     if(glfw3_FOUND)
-        message("-- Found GLFW3 cmake package")
+        message("-- Found GLFW3 module")
         find_path(GLFW3_INCLUDE_DIR "GLFW/glfw3.h")
         find_library(GLFW3_LIBRARY "libglfw3.a")
         if (GLFW3_INCLUDE_DIR)
@@ -25,11 +26,10 @@ else()
             set(BUILD_GLFW3 ON)
         endif()
     else(glfw3_FOUND)
-        message("-- GLFW3 package - not found")
+        message("-- GLFW3 module - not found")
         set(BUILD_GLFW3 ON)
     endif(glfw3_FOUND)
-endif(LANDOFOPENGL_DOWNLOAD_DEPS)
-
+endif(NOT BUILD_GLFW3)
 
 # Build GLFW3 locally into the binary directory
 if(BUILD_GLFW3)

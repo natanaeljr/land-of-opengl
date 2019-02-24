@@ -6,6 +6,8 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 #########################################################################################
 # General
 #########################################################################################
+option(BUILD_DEPS "Build project dependencies" OFF)
+
 set(CMAKE_VERBOSE_MAKEFILE OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 14)
@@ -13,10 +15,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_CXX_FLAGS_DEBUG "-g -ggdb -pg -fsanitize=undefined")
 set(CMAKE_CXX_FLAGS_RELEASE "-O2")
-
-option(LANDOFOPENGL_DOWNLOAD_DEPS OFF)
-
 set(OpenGL_GL_PREFERENCE "GLVND")
+
+add_definitions(-DGLFW_STATIC)
 
 #########################################################################################
 # Project
@@ -28,7 +29,13 @@ set(LAND_OF_OPENGL_BINARY "land-of-opengl")
 #########################################################################################
 # Dependencies
 #########################################################################################
-find_package(OpenGL)
+find_package(OpenGL REQUIRED)
+if(BUILD_DEPS)
+    message("-- Building project dependencies enabled")
+    set(BUILD_GLFW3 ON CACHE BOOL "")
+else()
+    message("-- Using project dependencies from system")
+endif()
 include(cmake/glfw3.cmake)
 
 #########################################################################################
