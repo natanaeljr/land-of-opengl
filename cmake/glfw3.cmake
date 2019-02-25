@@ -8,7 +8,7 @@ option(BUILD_GLFW3 "Download and build GLFW3" OFF)
 
 # Use GLFW from system
 if(NOT BUILD_GLFW3)
-    find_package(glfw3 3.2.1)
+    find_package(glfw3 3.2.1 QUIET)
     if(glfw3_FOUND)
         find_path(GLFW3_INCLUDE_DIR "GLFW/glfw3.h")
         find_library(GLFW3_LIBRARY "libglfw3.a")
@@ -50,7 +50,7 @@ if(BUILD_GLFW3)
         UPDATE_COMMAND "")
 endif(BUILD_GLFW3)
 
-# Global Variables
+# Export Variables
 set(GLFW3_INCLUDE_DIRS ${GLFW3_INCLUDE_DIR} CACHE STRING "GLFW3 Include directories")
 set(GLFW3_LIBRARIES ${GLFW3_LIBRARY}
     X11

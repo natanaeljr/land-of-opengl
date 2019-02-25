@@ -40,7 +40,9 @@ endif()
 
 include(cmake/glfw3.cmake)
 add_definitions(${GLFW3_DEFINITIONS})
+
 include(cmake/GLAD.cmake)
+add_definitions(${GLAD_DEFINITIONS})
 
 #########################################################################################
 # Headers

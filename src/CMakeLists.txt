@@ -7,6 +7,10 @@ add_library(${LAND_OF_OPENGL_LIBRARY} STATIC
     app.cc
 )
 
+if(GLAD_TARGET)
+add_dependencies(${LAND_OF_OPENGL_LIBRARY} ${GLAD_TARGET})
+endif()
+
 target_link_libraries(${LAND_OF_OPENGL_LIBRARY}
     ${GLAD_LIBRARIES}
     ${GLFW3_LIBRARIES}

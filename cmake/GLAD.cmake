@@ -10,6 +10,7 @@ option(DOWNLOAD_GLAD "Download and build GLAD" OFF)
 set(GLAD_PREFIX ${CMAKE_BINARY_DIR}/GLAD)
 set(GLAD_INCLUDE_DIR ${GLAD_PREFIX}/include)
 set(GLAD_LIBRARY ${GLAD_PREFIX}/lib/libglad.a)
+set(GLAD_TARGET "" CACHE STRING "Target for add_dependencies")
 set(GLAD_PROFILE "core" CACHE STRING "")
 set(GLAD_API "gl=3.3" CACHE STRING "")
 set(GLAD_SPEC "gl" CACHE STRING "")
@@ -40,12 +41,13 @@ if(NOT DOWNLOAD_GLAD)
             COMMENT "Generating GLAD")
         add_custom_target(glad-generate-files DEPENDS ${GLAD_SOURCES})
         set_source_files_properties(${GLAD_SOURCES} PROPERTIES GENERATED TRUE)
-        add_library(glad ${GLAD_SOURCES})
-        add_dependencies(glad glad-generate-files)
-        target_include_directories(glad
+        set(GLAD_TARGET glad)
+        add_library(${GLAD_TARGET} ${GLAD_SOURCES})
+        add_dependencies(${GLAD_TARGET} glad-generate-files)
+        target_include_directories(${GLAD_TARGET}
             PUBLIC $<BUILD_INTERFACE:${GLAD_INCLUDE_DIR}>
             INTERFACE $<INSTALL_INTERFACE:include/glad>)
-        set_target_properties(glad PROPERTIES
+        set_target_properties(${GLAD_TARGET} PROPERTIES
             LINKER_LANGUAGE C
             ARCHIVE_OUTPUT_DIRECTORY ${GLAD_PREFIX}/lib
             LIBRARY_OUTPUT_DIRECTORY ${GLAD_PREFIX}/lib)
@@ -66,6 +68,7 @@ if(DOWNLOAD_GLAD)
         UPDATE_COMMAND "")
 endif(DOWNLOAD_GLAD)
 
-# Global Variables
+# Export Variables
 set(GLAD_INCLUDE_DIRS ${GLAD_INCLUDE_DIR} CACHE STRING "GLAD Include directories")
 set(GLAD_LIBRARIES ${GLAD_LIBRARY} CACHE STRING "GLAD Libraries")
+set(GLAD_DEFINITIONS "" CACHE STRING "GLAD Definitions")
