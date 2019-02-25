@@ -17,8 +17,6 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g -ggdb -pg -fsanitize=undefined")
 set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 set(OpenGL_GL_PREFERENCE "GLVND")
 
-add_definitions(-DGLFW_STATIC)
-
 #########################################################################################
 # Project
 #########################################################################################

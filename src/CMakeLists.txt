@@ -19,7 +19,5 @@ target_link_libraries(${LAND_OF_OPENGL_LIBRARY}
 # Executable
 #########################################################################################
 add_executable(${LAND_OF_OPENGL_BINARY} main.cc)
-
-target_link_libraries(${LAND_OF_OPENGL_BINARY} ${LAND_OF_OPENGL_LIBRARY} dl)
-
 add_dependencies(${LAND_OF_OPENGL_BINARY} ${LAND_OF_OPENGL_LIBRARY})
+target_link_libraries(${LAND_OF_OPENGL_BINARY} ${LAND_OF_OPENGL_LIBRARY} dl)

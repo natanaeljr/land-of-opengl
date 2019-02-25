@@ -8,6 +8,12 @@
  */
 /************************************************************************************************/
 
+/** Forward-declaration */
+typedef struct GLFWwindow GLFWwindow;
+
+/**
+ * Land-of-OpenGL namespace.
+ */
 namespace landofopengl {
 
 /**
@@ -30,6 +36,21 @@ class App {
      * \return 0 on sucess, other on error.
      */
     int Launch();
+
+   private:
+    /**
+     * \brief Process user input.
+     * \param window  GLFW window handle
+     */
+    void ProcessInput(GLFWwindow* window);
+
+    /**
+     * \brief  Callback for handling window resizing.
+     * \param window  GLFW window handle
+     * \param width   Window width
+     * \param height  Window height
+     */
+    static void FrameBufferSizeCb(GLFWwindow* window, int width, int height);
 };
 
 } /* namespace landofopengl */
