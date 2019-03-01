@@ -19,7 +19,7 @@ int main()
     std::cout << "App main." << std::endl;
 
     landofopengl::App app;
-    int ret = app.Launch();
+    int ret = app.Run();
 
     return ret;
 }

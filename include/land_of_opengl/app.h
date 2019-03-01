@@ -24,20 +24,38 @@ class App {
     /**
      * \brief Default constructor.
      */
-    App() {}
+    App();
 
     /**
      * \brief Default destructor.
      */
-    ~App() {}
+    ~App() = default;
 
     /**
      * \brief Launch the application.
      * \return 0 on sucess, other on error.
      */
-    int Launch();
+    int Run();
 
    private:
+    /**
+     * Create OpenGL context window.
+     * \return  0 on sucess, other if failure.
+     */
+    int InitContext();
+
+    /**
+     * Destroy OpenGL context window.
+     * \return  0 on sucess, other if failure.
+     */
+    void FinishContext();
+
+    /**
+     * \brief Rendering loop.
+     * \return  0 on sucess, other if failure.
+     */
+    int RenderLoop();
+
     /**
      * \brief Process user input.
      * \param window  GLFW window handle
@@ -51,6 +69,10 @@ class App {
      * \param height  Window height
      */
     static void FrameBufferSizeCb(GLFWwindow* window, int width, int height);
+
+   private:
+    //! GLFW window handle
+    GLFWwindow* window;
 };
 
 } /* namespace landofopengl */
