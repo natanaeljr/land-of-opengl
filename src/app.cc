@@ -12,6 +12,8 @@
 
 #include <iostream>
 
+#include <gsl/gsl>
+
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 

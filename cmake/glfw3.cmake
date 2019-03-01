@@ -38,15 +38,20 @@ if(BUILD_GLFW3)
     set(GLFW3_LIBRARY ${GLFW3_PREFIX}/lib/libglfw3.a)
 
     # Build settings
-    set(GLFW_BUILD_DOCS OFF CACHE BOOL "")
-    set(GLFW_BUILD_TESTS OFF CACHE BOOL "")
-    set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "")
+    set(BUILD_SHARED_LIBS OFF)
+    set(GLFW_BUILD_DOCS OFF)
+    set(GLFW_BUILD_TESTS OFF)
+    set(GLFW_BUILD_EXAMPLES OFF)
 
     # Download and build
     ExternalProject_Add(glfw3
         URL "https://github.com/glfw/glfw/releases/download/3.2.1/glfw-3.2.1.zip"
         PREFIX ${GLFW3_PREFIX}
-        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${GLFW3_PREFIX}"
+        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${GLFW3_PREFIX}
+            -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}
+            -DGLFW_BUILD_DOCS=${GLFW_BUILD_DOCS}
+            -DGLFW_BUILD_TESTS=${GLFW_BUILD_TESTS}
+            -DGLFW_BUILD_EXAMPLES=${GLFW_BUILD_EXAMPLES}
         UPDATE_COMMAND "")
 endif(BUILD_GLFW3)
 
