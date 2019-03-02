@@ -10,10 +10,6 @@
 
 #include "land_of_opengl/app.h"
 
-#include <iostream>
-
-#include <gsl/gsl>
-
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
@@ -22,53 +18,8 @@
 namespace landofopengl {
 
 /************************************************************************************************/
-App::App() : window(nullptr)
+App::App()
 {
-}
-
-/************************************************************************************************/
-int App::Run()
-{
-    /* Init GLFW and create context */
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-#ifdef __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);  // Mac OS X compatibility
-#endif
-
-    window = glfwCreateWindow(800, 600, "Land-of-OpenGL",
-                              nullptr /* glfwGetPrimaryMonitor() for fullscreen */, nullptr);
-    if (window == nullptr) {
-        std::cerr << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, &App::FramebufferSizeCb);
-
-    /* Load OpenGL functions */
-    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
-        std::cerr << "Failed to initialize GLAD" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-
-    /* Main loop */
-    while (!glfwWindowShouldClose(window)) {
-        /* Input */
-        ProcessInput(window);
-        /* Rendering */
-        if (int ret = RenderLoop()) {
-            return ret;
-        }
-        /* Swap double-buffer and check for events */
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
-
-    return 0;
 }
 
 /************************************************************************************************/
@@ -83,15 +34,6 @@ void App::ProcessInput(GLFWwindow* window)
 void App::FramebufferSizeCb(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
-}
-
-/************************************************************************************************/
-int App::RenderLoop()
-{
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    return 0;
 }
 
 } /* namespace landofopengl */

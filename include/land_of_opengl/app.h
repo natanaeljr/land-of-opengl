@@ -37,13 +37,7 @@ class App {
      */
     int Run();
 
-   private:
-    /**
-     * \brief Rendering loop.
-     * \return  0 on sucess, other if failure.
-     */
-    int RenderLoop();
-
+   protected:
     /**
      * \brief Process user input.
      * \param window  GLFW window handle
@@ -59,8 +53,10 @@ class App {
     static void FramebufferSizeCb(GLFWwindow* window, int width, int height);
 
    private:
-    //! GLFW window handle
-    GLFWwindow* window;
+    //! The Vertex Shader
+    static const char* const kVertexShaderSource;
+    //! The Fragment Shader
+    static const char* const kFragmentShaderSource;
 };
 
 } /* namespace landofopengl */
