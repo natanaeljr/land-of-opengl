@@ -29,11 +29,24 @@ App::App() : window(nullptr)
 /************************************************************************************************/
 int App::Run()
 {
-    /* Create GLFW window */
-    if (int ret = InitContext()) {
+    /* Init GLFW and create context */
+    glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);  // Mac OS X compatibility
+#endif
+
+    window = glfwCreateWindow(800, 600, "Land-of-OpenGL",
+                              nullptr /* glfwGetPrimaryMonitor() for fullscreen */, nullptr);
+    if (window == nullptr) {
         std::cerr << "Failed to create GLFW window" << std::endl;
-        return ret;
+        glfwTerminate();
+        return -1;
     }
+    glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, &App::FramebufferSizeCb);
 
     /* Load OpenGL functions */
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
@@ -59,33 +72,6 @@ int App::Run()
 }
 
 /************************************************************************************************/
-int App::InitContext()
-{
-    /* Init GLFW and create context */
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Mac OS X compatibility
-
-    window = glfwCreateWindow(800, 600, "Land-of-OpenGL",
-                              nullptr /* glfwGetPrimaryMonitor() for fullscreen */, nullptr);
-    if (window == nullptr) {
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
-
-    return 0;
-}
-
-/************************************************************************************************/
-void App::FinishContext()
-{
-    glfwTerminate();
-}
-
-/************************************************************************************************/
 void App::ProcessInput(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
@@ -94,7 +80,7 @@ void App::ProcessInput(GLFWwindow* window)
 }
 
 /************************************************************************************************/
-void App::FrameBufferSizeCb(GLFWwindow* window, int width, int height)
+void App::FramebufferSizeCb(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
 }

@@ -39,18 +39,6 @@ class App {
 
    private:
     /**
-     * Create OpenGL context window.
-     * \return  0 on sucess, other if failure.
-     */
-    int InitContext();
-
-    /**
-     * Destroy OpenGL context window.
-     * \return  0 on sucess, other if failure.
-     */
-    void FinishContext();
-
-    /**
      * \brief Rendering loop.
      * \return  0 on sucess, other if failure.
      */
@@ -68,7 +56,7 @@ class App {
      * \param width   Window width
      * \param height  Window height
      */
-    static void FrameBufferSizeCb(GLFWwindow* window, int width, int height);
+    static void FramebufferSizeCb(GLFWwindow* window, int width, int height);
 
    private:
     //! GLFW window handle
