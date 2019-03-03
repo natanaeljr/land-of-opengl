@@ -1,4 +1,3 @@
-/************************************************************************************************/
 /**
  * \file app.cc
  * \brief Land-of-OpenGL main implementation.
@@ -6,7 +5,6 @@
  * \author Natanael Josue Rabello
  * \copyright Copyright (c) 2019
  */
-/************************************************************************************************/
 
 #include "land_of_opengl/app.h"
 

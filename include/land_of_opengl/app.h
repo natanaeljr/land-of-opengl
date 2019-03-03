@@ -1,4 +1,3 @@
-/************************************************************************************************/
 /**
  * \file app.h
  * \brief Land-of-OpenGL main header.
@@ -6,6 +5,10 @@
  * \author Natanael Josue Rabello
  * \copyright Copyright (c) 2019
  */
+
+#ifndef LAND_OF_OPENGL_APP_H_
+#define LAND_OF_OPENGL_APP_H_
+
 /************************************************************************************************/
 
 /** Forward-declaration */
@@ -60,3 +63,5 @@ class App {
 };
 
 } /* namespace landofopengl */
+
+#endif /* LAND_OF_OPENGL_APP_H_ */
