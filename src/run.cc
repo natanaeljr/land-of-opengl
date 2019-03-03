@@ -1,4 +1,3 @@
-/************************************************************************************************/
 /**
  * \file run.cc
  * \brief Land-of-OpenGL App's Run method definition.
@@ -6,7 +5,6 @@
  * \author Natanael Josue Rabello
  * \copyright Copyright (c) 2019
  */
-/************************************************************************************************/
 
 #include "land_of_opengl/app.h"
 
@@ -15,6 +13,8 @@
 #include <gsl/gsl>
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
+
+#include "land_of_opengl/shader_program.h"
 
 /************************************************************************************************/
 
@@ -151,6 +151,11 @@ int App::Run()
     glEnableVertexAttribArray(/*index*/ 1);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+
+    {
+        ShaderProgram shader;
+        shader.Create({.vertex = "vertex", .fragment = "fragment"});
+    }
 
     /* Main loop */
     while (!glfwWindowShouldClose(window)) {

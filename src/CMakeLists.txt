@@ -6,6 +6,7 @@ cmake_minimum_required(VERSION 3.5)
 add_library(${LAND_OF_OPENGL_LIBRARY} STATIC
     app.cc
     run.cc
+    shader_program.cc
 )
 
 if(GLAD_TARGET)
