@@ -22,19 +22,23 @@ namespace landofopengl {
 
 /************************************************************************************************/
 const char* const App::kVertexShaderSource = R"(#version 330 core
-layout (location = 0) in vec3 aPos;
+layout (location = 0) in vec3 inPos;
+layout (location = 1) in vec3 inColor;
+out vec3 color;
 void main()
 {
-    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0f);
+    gl_Position = vec4(inPos, 1.0f);
+    color = inColor;
 }
 )";
 
 /************************************************************************************************/
 const char* const App::kFragmentShaderSource = R"(#version 330 core
 out vec4 FragColor;
+in vec3 color;
 void main()
 {
-    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+    FragColor = vec4(color, 1.0f);
 }
 )";
 
@@ -123,10 +127,10 @@ int App::Run()
     glDeleteShader(fragment_shader);
 
     /* OpenGL drawing */
-    float vertices[][3] = {
-        {-0.5f, -0.5f, 0.0f},
-        {+0.5f, -0.5f, 0.0f},
-        {+0.0f, +0.5f, 0.0f},
+    float vertices[][2][3] = {
+        {{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},
+        {{+0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}},
+        {{+0.0f, +0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}},
     };
 
     /* Create VAO (Vertex Array Object) and VBO (Vertex Buffer Object) */
@@ -138,8 +142,13 @@ int App::Run()
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     // Set Vertex attributes pointers
     glVertexAttribPointer(/*index*/ 0, /*size*/ 3, /*type*/ GL_FLOAT,
-                          /*normalized*/ GL_FALSE, /*stride*/ 3 * sizeof(float), /*pointer*/ 0);
+                          /*normalized*/ GL_FALSE, /*stride*/ 6 * sizeof(float),
+                          /*pointer*/ (void*) 0);
     glEnableVertexAttribArray(/*index*/ 0);
+    glVertexAttribPointer(/*index*/ 1, /*size*/ 3, /*type*/ GL_FLOAT,
+                          /*normalized*/ GL_FALSE, /*stride*/ 6 * sizeof(float),
+                          /*pointer*/ (void*) (3 * sizeof(float)));
+    glEnableVertexAttribArray(/*index*/ 1);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
