@@ -124,37 +124,24 @@ int App::Run()
 
     /* OpenGL drawing */
     float vertices[][3] = {
-        {+0.5f, +0.5f, 0.0f},
-        {+0.5f, -0.5f, 0.0f},
         {-0.5f, -0.5f, 0.0f},
-        {-0.5f, +0.5f, 0.0f},
-    };
-    char indices[][3] = {
-        {0, 1, 3},
-        {1, 2, 3},
+        {+0.5f, -0.5f, 0.0f},
+        {+0.0f, +0.5f, 0.0f},
     };
 
-    /* Create VAO (Vertex Array Object), VBO (Vertex Buffer Object), EBO (Element Buffer Object) */
-    GLuint vao, vbo, ebo;
+    /* Create VAO (Vertex Array Object) and VBO (Vertex Buffer Object) */
+    GLuint vao, vbo;
     glGenVertexArrays(/*size*/ 1, &vao);
     glGenBuffers(/*size*/ 1, &vbo);
-    glGenBuffers(/*size*/ 1, &ebo);
     glBindVertexArray(vao);
-    // Copy VBO
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    // Copy EBO
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     // Set Vertex attributes pointers
     glVertexAttribPointer(/*index*/ 0, /*size*/ 3, /*type*/ GL_FLOAT,
-                          /*normalized*/ GL_FALSE, /*stride*/ 0, /*pointer*/ 0);
+                          /*normalized*/ GL_FALSE, /*stride*/ 3 * sizeof(float), /*pointer*/ 0);
     glEnableVertexAttribArray(/*index*/ 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-
-    /* Option to draw wireframes */
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     /* Main loop */
     while (!glfwWindowShouldClose(window)) {
@@ -168,7 +155,7 @@ int App::Run()
         glClear(GL_COLOR_BUFFER_BIT);
         glUseProgram(shader_program);
         glBindVertexArray(vao);
-        glDrawElements(GL_TRIANGLES, /*size*/ 6, GL_UNSIGNED_BYTE, /*indicies*/ 0);
+        glDrawArrays(GL_TRIANGLES, /*first*/ 0, /*count*/ 3);
 
         /*************/
         /* Swap double-buffer and check for events */
