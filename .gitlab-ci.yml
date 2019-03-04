@@ -74,7 +74,7 @@ build:
     - cd build
     - cmake ..
     - make all
-    - mv build/src/land-of-opengl land-of-opengl
+    - mv build/land-of-opengl land-of-opengl
   artifacts:
     name: LandOfOpenGL
     paths:
