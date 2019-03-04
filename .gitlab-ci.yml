@@ -74,9 +74,12 @@ build:
     - cd build
     - cmake ..
     - make all
+    - mv build/src/land-of-opengl land-of-opengl
   artifacts:
+    name: LandOfOpenGL
     paths:
-      - build/src/land-of-opengl
+      - land-of-opengl
+      - src/shaders
     expire_in: 2 days
   dependencies: []
 
