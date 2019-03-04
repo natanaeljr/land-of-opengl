@@ -10,11 +10,11 @@ option(BUILD_DEPS "Build project dependencies" OFF)
 
 set(CMAKE_VERBOSE_MAKEFILE OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_FLAGS_DEBUG "-g -ggdb -pg -fsanitize=undefined -Werror -Wall")
-set(CMAKE_CXX_FLAGS_RELEASE "-O2")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
 set(OpenGL_GL_PREFERENCE "GLVND")
 
 #########################################################################################
