@@ -1,5 +1,5 @@
 /**
- * \file shader.h
+ * \file shader_program.h
  * \author Natanael Josue Rabello
  * \brief The Shader Program class declaration.
  * \date 2019-03-03
@@ -9,8 +9,9 @@
 #ifndef LAND_OF_OPENGL_SHADER_PROGRAM_H_
 #define LAND_OF_OPENGL_SHADER_PROGRAM_H_
 
-#include <tuple>
 #include <string>
+#include <string_view>
+#include <optional>
 
 /************************************************************************************************/
 
@@ -31,43 +32,58 @@ class ShaderProgram {
     ~ShaderProgram() = default;
 
     /**
-     * Shaders source path.
+     * \brief  Create the Shader Program from shader files.
+     * \param  vertex_path
+     * \param  fragment_path  Path to Fragment shader file.
+     * \return Error code: 0 on success, other on failure.
      */
-    struct ShaderPath {
-        std::string vertex;    //!< The Vertex shader
-        std::string fragment;  //!< The Fragment shader
-    };
+    int Create(const std::string_view vertex_path, const std::string_view fragment_path);
 
     /**
-     * \brief  Create the Shader Program for given Shader sources.
-     * \param  shaders  Shaders source path.
-     * \return 0 on success, other on failure.
+     * \brief  Destroy the created Shader Program.
      */
-    int Create(const ShaderPath& shader_path);
+    void Delete();
 
     /**
-     * \brief  Activate this Shader Program.
-     * \return 0 on success, other on failure.
+     * \brief Activate this Shader Program.
+     * \note  The Program must already created with Create().
      */
-    int Activate();
+    void Use();
 
     /**
      * \brief Get the program identifier.
      * \return OpenGL shader program ID.
      */
-    unsigned int GetId() { return id_; }
+    unsigned int GetId() const { return program_id_; }
 
    protected:
     /**
-     * \brief  Load a shader file from the given path.
+     * \brief  Read a shader file from the given path.
      * \param  path  Path to shader file.
-     * \return Tuple indicating success or failure, and the file content as string if success.
+     * \return Optional containing the file content as string.
      */
-    std::tuple<bool, std::string> LoadFile(const std::string& path);
+    std::optional<std::string> LoadFile(const std::string_view path);
+
+    /**
+     * Shader Type enumeration.
+     */
+    enum class ShaderType {
+        Vertex,   //!< Vertex shader type
+        Fragment  //!< Fragment shader type
+    };
+
+    /**
+     * \brief Create a Shader in OpenGL
+     * \param shader_type  The type of shader to create.
+     * \param shader_path  Path to the shader file.
+     * \return Optional containing the Shader ID.
+     */
+    std::optional<unsigned int> CreateShader(const ShaderType shader_type,
+                                             const std::string_view shader_path);
 
    private:
     //! The program identifier in OpenGL
-    unsigned int id_;
+    unsigned int program_id_ = 0;
 };
 
 } /* namespace landofopengl */

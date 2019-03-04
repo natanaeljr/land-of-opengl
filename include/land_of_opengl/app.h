@@ -54,12 +54,6 @@ class App {
      * \param height  Window height
      */
     static void FramebufferSizeCb(GLFWwindow* window, int width, int height);
-
-   private:
-    //! The Vertex Shader
-    static const char* const kVertexShaderSource;
-    //! The Fragment Shader
-    static const char* const kFragmentShaderSource;
 };
 
 } /* namespace landofopengl */

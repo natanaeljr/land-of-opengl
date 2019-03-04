@@ -20,29 +20,6 @@
 
 namespace landofopengl {
 
-/************************************************************************************************/
-const char* const App::kVertexShaderSource = R"(#version 330 core
-layout (location = 0) in vec3 inPos;
-layout (location = 1) in vec3 inColor;
-out vec3 color;
-void main()
-{
-    gl_Position = vec4(inPos, 1.0f);
-    color = inColor;
-}
-)";
-
-/************************************************************************************************/
-const char* const App::kFragmentShaderSource = R"(#version 330 core
-out vec4 FragColor;
-in vec3 color;
-void main()
-{
-    FragColor = vec4(color, 1.0f);
-}
-)";
-
-/************************************************************************************************/
 int App::Run()
 {
     /* Initialize GLFW */
@@ -50,7 +27,7 @@ int App::Run()
         std::cerr << "Failed to initialize GLFW" << std::endl;
         return -1;
     }
-    auto _terminate_glfw = gsl::finally([]() { glfwTerminate(); });
+    auto _auto_terminate_glfw = gsl::finally([] { glfwTerminate(); });
 
     /* Create GLFW context */
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -78,53 +55,14 @@ int App::Run()
         return -1;
     }
 
-    /* Load the Vertex Shader */
-    GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertex_shader, /* count */ 1, &kVertexShaderSource, /*length*/ nullptr);
-    glCompileShader(vertex_shader);
-    {
-        GLint success = 0;
-        glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
-        if (!success) {
-            char info_log[512];
-            glGetShaderInfoLog(vertex_shader, sizeof(info_log), nullptr, info_log);
-            std::cerr << "Failed to compile Vertex Shader:\n" << info_log << std::endl;
-            return -1;
-        }
+    /* Generate the Shader Program */
+    ShaderProgram shader_program;
+    if (int errc = shader_program.Create("./src/shaders/vertex.vert",
+                                         "./src/shaders/fragment.frag") != 0) {
+        std::cerr << "Failed to create the Shader Program (" << errc << ")!" << std::endl;
+        return -1;
     }
-
-    /* Load the Fragment Shader */
-    GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment_shader, /*count */ 1, &kFragmentShaderSource, /*length*/ nullptr);
-    glCompileShader(fragment_shader);
-    {
-        GLint success = 0;
-        glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
-        if (!success) {
-            char info_log[512];
-            glGetShaderInfoLog(fragment_shader, sizeof(info_log), /*length*/ nullptr, info_log);
-            std::cerr << "Failed to compile Fragment Shader:\n" << info_log << std::endl;
-            return -1;
-        }
-    }
-
-    /* Load the Shaders Program */
-    GLuint shader_program = glCreateProgram();
-    glAttachShader(shader_program, vertex_shader);
-    glAttachShader(shader_program, fragment_shader);
-    glLinkProgram(shader_program);
-    {
-        GLint success = 0;
-        glGetProgramiv(shader_program, GL_LINK_STATUS, &success);
-        if (!success) {
-            char info_log[512];
-            glGetProgramInfoLog(shader_program, sizeof(info_log), /*length*/ nullptr, info_log);
-            std::cerr << "Failed to link Shader Program:\n" << info_log << std::endl;
-            return -1;
-        }
-    }
-    glDeleteShader(vertex_shader);
-    glDeleteShader(fragment_shader);
+    auto _auto_delete_shader_program = gsl::finally([&] { shader_program.Delete(); });
 
     /* OpenGL drawing */
     float vertices[][2][3] = {
@@ -152,11 +90,6 @@ int App::Run()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    {
-        ShaderProgram shader;
-        shader.Create({.vertex = "vertex", .fragment = "fragment"});
-    }
-
     /* Main loop */
     while (!glfwWindowShouldClose(window)) {
         /*************/
@@ -167,7 +100,7 @@ int App::Run()
         /* Rendering */
         glClearColor(0.2f, 0.3, 0.4f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        glUseProgram(shader_program);
+        shader_program.Use();
         glBindVertexArray(vao);
         glDrawArrays(GL_TRIANGLES, /*first*/ 0, /*count*/ 3);
 
@@ -177,6 +110,7 @@ int App::Run()
         glfwPollEvents();
     }
 
+    std::cout << "Terminate Land-of-OpenGL." << std::endl;
     return 0;
 }
 
