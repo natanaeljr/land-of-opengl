@@ -9,13 +9,10 @@ add_library(${LAND_OF_OPENGL_LIBRARY} STATIC
     shader_program.cc
 )
 
-# Dependencies
-if(GLAD_TARGET)
-add_dependencies(${LAND_OF_OPENGL_LIBRARY} ${GLAD_TARGET})
-endif()
-if(STBI_TARGET)
-add_dependencies(${LAND_OF_OPENGL_LIBRARY} ${STBI_TARGET})
-endif()
+add_dependencies(${LAND_OF_OPENGL_LIBRARY}
+    ${STBI_TARGET}
+    ${GLAD_TARGET}
+)
 
 target_link_libraries(${LAND_OF_OPENGL_LIBRARY}
     ${STB_LIBRARIES}
