@@ -37,7 +37,7 @@ if(DOWNLOAD_STB)
         UPDATE_COMMAND ""
         BUILD_COMMAND ""
         BUILD_IN_SOURCE 1
-        INSTALL_COMMAND cp stb_image.h ${STB_INCLUDE_DIR}
+        INSTALL_COMMAND cp stb_image.h ${STB_INCLUDE_DIR}/stb && ls -1 ${STB_INCLUDE_DIR}/stb
     )
 endif(DOWNLOAD_STB)
 
@@ -50,6 +50,10 @@ add_custom_command(
     COMMENT "Generating stb_image.h implementation")
 add_custom_target(stbi-generate-impl DEPENDS ${STBI_SOURCE})
 set_source_files_properties(${STBI_SOURCE} PROPERTIES GENERATED TRUE)
+if(DOWNLOAD_STB)
+add_dependencies(stbi-generate-impl stb)
+endif()
+
 add_library(${STBI_TARGET} ${STBI_SOURCE})
 add_dependencies(${STBI_TARGET} stbi-generate-impl)
 target_include_directories(${STBI_TARGET}
