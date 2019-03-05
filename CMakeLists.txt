@@ -32,6 +32,7 @@ if(BUILD_DEPS)
     set(BUILD_GLFW3 ON CACHE BOOL "")
     set(DOWNLOAD_GLAD ON CACHE BOOL "")
     set(DOWNLOAD_GSL ON CACHE BOOL "")
+    set(DOWNLOAD_STB ON CACHE BOOL "")
 else()
     message(STATUS "Using project dependencies from system")
 endif()
@@ -48,6 +49,9 @@ add_definitions(${GLAD_DEFINITIONS})
 include(cmake/GSL.cmake)
 add_definitions(${GSL_DEFINITIONS})
 
+include(cmake/stb.cmake)
+add_definitions(${STB_DEFINITIONS})
+
 #########################################################################################
 # Headers
 #########################################################################################
@@ -56,6 +60,7 @@ include_directories(${OPENGL_INCLUDE_DIRS})
 include_directories(${GLFW3_INCLUDE_DIRS})
 include_directories(${GLAD_INCLUDE_DIRS})
 include_directories(${GSL_INCLUDE_DIRS})
+include_directories(${STB_INCLUDE_DIRS})
 
 #########################################################################################
 # Sub-directories
