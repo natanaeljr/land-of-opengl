@@ -77,7 +77,7 @@ build:
     - cd ..
     - mkdir LandOfOpenGL
     - mv build/land-of-opengl LandOfOpenGL/
-    - mv -r src/shaders LandOfOpenGL/
+    - mv src/shaders LandOfOpenGL/
   artifacts:
     name: LandOfOpenGL
     paths:
