@@ -1,6 +1,8 @@
+# Clang-Format config file
+# Version support: clang-format-6.0
 ---
 Language:        Cpp
-# BasedOnStyle:  Google
+BasedOnStyle:  Google
 AccessModifierOffset: -1
 AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: false
