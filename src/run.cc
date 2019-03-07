@@ -13,6 +13,7 @@
 #include <gsl/gsl>
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
+#include "stb/stb_image.h"
 
 #include "land_of_opengl/shader_program.h"
 
@@ -57,18 +58,45 @@ int App::Run()
 
     /* Generate the Shader Program */
     ShaderProgram shader_program;
-    if (int errc = shader_program.Create("./src/shaders/vertex.vert",
-                                         "./src/shaders/fragment.frag") != 0) {
+    if (int errc =
+            shader_program.Create("./src/shaders/vertex.vert", "./src/shaders/fragment.frag");
+        errc != 0) {
         std::cerr << "Failed to create the Shader Program (" << errc << ")!" << std::endl;
         return -1;
     }
     auto _auto_delete_shader_program = gsl::finally([&] { shader_program.Delete(); });
 
+    /* Load the texture image */
+    int width, height, nr_channels;
+    unsigned char* texture_data =
+        stbi_load("./res/greenwall.jpg", &width, &height, &nr_channels, 0);
+    if (texture_data == nullptr) {
+        std::cerr << "Failed to load texture image!" << std::endl;
+        return -1;
+    }
+    std::cout << "Loaded 2D texture image" << std::endl;
+
+    /* Create 2D texture */
+    GLuint texture;
+    glGenTextures(/*size*/ 1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, /*level*/ 0, GL_RGB, width, height, /*border*/ 0, GL_RGB,
+                 GL_UNSIGNED_BYTE, texture_data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    /* Delete buffered image */
+    stbi_image_free(texture_data);
+
     /* OpenGL drawing */
-    float vertices[][2][3] = {
-        {{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},
-        {{+0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}},
-        {{+0.0f, +0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}},
+    float vertices[][8] = {
+        { -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f },
+        { +0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f },
+        { +0.0f, +0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.5f, 1.0f },
     };
 
     /* Create VAO (Vertex Array Object) and VBO (Vertex Buffer Object) */
@@ -80,13 +108,17 @@ int App::Run()
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     // Set Vertex attributes pointers
     glVertexAttribPointer(/*index*/ 0, /*size*/ 3, /*type*/ GL_FLOAT,
-                          /*normalized*/ GL_FALSE, /*stride*/ 6 * sizeof(float),
+                          /*normalized*/ GL_FALSE, /*stride*/ 8 * sizeof(float),
                           /*pointer*/ (void*) 0);
     glEnableVertexAttribArray(/*index*/ 0);
     glVertexAttribPointer(/*index*/ 1, /*size*/ 3, /*type*/ GL_FLOAT,
-                          /*normalized*/ GL_FALSE, /*stride*/ 6 * sizeof(float),
+                          /*normalized*/ GL_FALSE, /*stride*/ 8 * sizeof(float),
                           /*pointer*/ (void*) (3 * sizeof(float)));
     glEnableVertexAttribArray(/*index*/ 1);
+    glVertexAttribPointer(/*index*/ 2, /*size*/ 2, /*type*/ GL_FLOAT,
+                          /*normalized*/ GL_FALSE, /*stride*/ 8 * sizeof(float),
+                          /*pointer*/ (void*) (6 * sizeof(float)));
+    glEnableVertexAttribArray(/*index*/ 2);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
@@ -101,6 +133,7 @@ int App::Run()
         glClearColor(0.2f, 0.3, 0.4f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         shader_program.Use();
+        glBindTexture(GL_TEXTURE_2D, texture);
         glBindVertexArray(vao);
         glDrawArrays(GL_TRIANGLES, /*first*/ 0, /*count*/ 3);
 
