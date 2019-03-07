@@ -3,13 +3,13 @@ image: $CI_REGISTRY/$CONTAINER_IMAGE:$CI_COMMIT_REF_SLUG
 stages:
   - docker:build
   - docker:deploy
-  - build
-  - deploy
+  - app:build
+  - app:deploy
 
 variables:
   DOCKER_HOST: tcp://docker:2375/
   DOCKER_DRIVER: overlay2
-  CONTAINER_NAME: ubuntu-opengl
+  CONTAINER_NAME: ubuntu
   CONTAINER_TAG: $CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
   CONTAINER_IMAGE: $CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/$CONTAINER_NAME
   CONTAINER_TAR_FILE: $CI_PROJECT_NAMESPACE.$CI_PROJECT_NAME.$CONTAINER_NAME.$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID.tar
@@ -47,8 +47,8 @@ docker:build:
   extends: .docker
   stage: docker:build
   script:
-    - docker pull $CONTAINER_CACHE_FROM || echo -e "\e[31mdocker pull cache failed, ignoring.\e[0m"
-    - docker build --cache-from $CONTAINER_CACHE_FROM --tag $CONTAINER_IMAGE:$CONTAINER_TAG $DOCKERFILE_DIR
+    - if [ -z "$DOCKER_BUILD_CLEAN" ]; then docker pull $CONTAINER_CACHE_FROM || echo -e "\e[31mdocker pull cache failed, ignoring.\e[0m"; fi
+    - docker build $([ -z "$DOCKER_BUILD_CLEAN" ] && echo -n "--cache-from $CONTAINER_CACHE_FROM") --tag $CONTAINER_IMAGE:$CONTAINER_TAG $DOCKERFILE_DIR
     - docker save --output $CONTAINER_TAR_FILE $CONTAINER_IMAGE:$CONTAINER_TAG
   artifacts:
     paths:
@@ -67,8 +67,8 @@ docker:deploy:
 
 ###################################################################################################
 
-build:
-  stage: build
+app:build:
+  stage: app:build
   script:
     - pwd; ls
     - mkdir build
@@ -80,15 +80,15 @@ build:
       - build/land-of-opengl
   dependencies: []
 
-deploy:
-  stage: deploy
+app:deploy:
+  stage: app:deploy
   script:
     - mkdir -p LandOfOpenGL/src
     - cp -r src/shaders LandOfOpenGL/src/shaders
     - cp -r res LandOfOpenGL/
     - cp build/land-of-opengl LandOfOpenGL/
   dependencies:
-    - build
+    - app:build
   artifacts:
     name: LandOfOpenGL
     paths:
