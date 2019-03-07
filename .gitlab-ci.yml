@@ -83,9 +83,9 @@ build:
 deploy:
   stage: deploy
   script:
-    - mkdir -p LandOfOpenGL/src LandOfOpenGL/res
+    - mkdir -p LandOfOpenGL/src
     - cp -r src/shaders LandOfOpenGL/src/shaders
-    - cp -r res LandOfOpenGL/res
+    - cp -r res LandOfOpenGL/
     - cp build/land-of-opengl LandOfOpenGL/
   dependencies:
     - build
