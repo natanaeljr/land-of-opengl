@@ -45,7 +45,7 @@ endif(DOWNLOAD_STB)
 set(STBI_SOURCE ${STB_PREFIX}/src/stb_image.cc)
 add_custom_command(
     OUTPUT ${STBI_SOURCE}
-    COMMAND mkdir -p src && echo \"\#define STB_IMAGE_IMPLEMENTATION 1\\n\#include \\"stb\/stb_image.h\\"\\n\" > ${STBI_SOURCE}
+    COMMAND mkdir -p src && echo -e \"\#define STB_IMAGE_IMPLEMENTATION 1\\n\#include \\"stb\/stb_image.h\\"\\n\" > ${STBI_SOURCE}
     WORKING_DIRECTORY ${STB_PREFIX}
     COMMENT "Generating stb_image.h implementation")
 add_custom_target(stbi-generate-impl DEPENDS ${STBI_SOURCE})

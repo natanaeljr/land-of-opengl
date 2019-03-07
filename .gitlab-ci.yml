@@ -4,6 +4,7 @@ stages:
   - docker:build
   - docker:deploy
   - build
+  - deploy
 
 variables:
   DOCKER_HOST: tcp://docker:2375/
@@ -74,15 +75,24 @@ build:
     - cd build
     - cmake ..
     - make all
-    - cd ..
-    - mkdir LandOfOpenGL
-    - mv build/land-of-opengl LandOfOpenGL/
-    - mv src/shaders LandOfOpenGL/
+  artifacts:
+    paths:
+      - build/land-of-opengl
+  dependencies: []
+
+deploy:
+  stage: deploy
+  script:
+    - mkdir -p LandOfOpenGL/src LandOfOpenGL/res
+    - cp -r src/shaders LandOfOpenGL/src/shaders
+    - cp -r res LandOfOpenGL/res
+    - cp build/land-of-opengl LandOfOpenGL/
+  dependencies:
+    - build
   artifacts:
     name: LandOfOpenGL
     paths:
       - LandOfOpenGL
-    expire_in: 2 days
-  dependencies: []
+    expire_in: 5 days
 
 ###################################################################################################

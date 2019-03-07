@@ -83,7 +83,7 @@ void ShaderProgram::Use()
 /************************************************************************************************/
 std::optional<std::string> ShaderProgram::LoadFile(const std::string_view path)
 {
-    std::ifstream file{path.data()};
+    std::ifstream file{ path.data() };
 
     if (!file.is_open()) {
         std::cerr << "Failed to open '" << path << "' file: " << strerror(errno) << std::endl;
