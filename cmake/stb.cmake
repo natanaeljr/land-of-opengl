@@ -45,7 +45,9 @@ endif(DOWNLOAD_STB)
 set(STBI_SOURCE ${STB_PREFIX}/src/stb_image.cc)
 add_custom_command(
     OUTPUT ${STBI_SOURCE}
-    COMMAND mkdir -p src && echo \"\#define STB_IMAGE_IMPLEMENTATION 1\\n\#include \\"stb_image.h\\"\\n\" > ${STBI_SOURCE}
+    COMMAND mkdir -p src
+        && echo \"\#define STB_IMAGE_IMPLEMENTATION 1\" > ${STBI_SOURCE}
+        && echo \"\#include \\"stb\/stb_image.h\\"\" >> ${STBI_SOURCE}
     WORKING_DIRECTORY ${STB_PREFIX}
     COMMENT "Generating stb_image.h implementation")
 add_custom_target(stbi-generate-impl DEPENDS ${STBI_SOURCE})
@@ -57,7 +59,7 @@ endif()
 add_library(${STBI_TARGET} ${STBI_SOURCE})
 add_dependencies(${STBI_TARGET} stbi-generate-impl)
 target_include_directories(${STBI_TARGET}
-    PUBLIC $<BUILD_INTERFACE:${STB_INCLUDE_DIR}/stb>
+    PUBLIC $<BUILD_INTERFACE:${STB_INCLUDE_DIR}>
     INTERFACE $<INSTALL_INTERFACE:${STB_INCLUDE_DIR}>)
 set_target_properties(${STBI_TARGET} PROPERTIES
     LINKER_LANGUAGE CXX
